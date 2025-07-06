@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - TryneX Lifestyle</title>
+    <meta name="description" content="Complete your order at TryneX Lifestyle. Enter delivery details and make payment.">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .checkout-header {
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        
+        .checkout-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        .order-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .payment-method {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover, .payment-method.selected {
+            border-color: #FFD700;
+            background: #fff8dc;
+        }
+        
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .bkash { color: #E2136E; }
+        .nagad { color: #F37120; }
+        .upay { color: #7B2F98; }
+        
+        .advance-payment {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .advance-payment h4 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+        }
+        
+        .payment-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0.5rem 0;
+        }
+        
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .item-price {
+            color: #666;
+        }
+        
+        .order-totals {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .total-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-line.final {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #333;
+            border-top: 1px solid #ddd;
+            padding-top: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <!-- Back to Cart -->
+        <div style="margin-bottom: 2rem;">
+            <a href="index.html" class="btn btn-outline" style="text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Back to Cart
+            </a>
+        </div>
+        
+        <!-- Header -->
+        <div class="checkout-header">
+            <h1><i class="fas fa-shopping-cart"></i> Complete Your Order</h1>
+            <p>Enter your details below to place your order</p>
+        </div>
+        
+        <div class="checkout-content">
+            <!-- Checkout Form -->
+            <div class="checkout-form">
+                <form id="checkoutForm">
+                    <!-- Customer Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i> Customer Information
+                        </h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerName">Full Name *</label>
+                                <input type="text" id="customerName" name="customerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerPhone">Phone Number *</label>
+                                <input type="tel" id="customerPhone" name="customerPhone" required placeholder="+880 1XXX XXXXXX">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerEmail">Email Address</label>
+                            <input type="email" id="customerEmail" name="customerEmail" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    
+                    <!-- Delivery Address -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-map-marker-alt"></i> Delivery Address
+                        </h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="district">District *</label>
+                                <select id="district" name="district" required onchange="loadThanas()">
+                                    <option value="">Select District</option>
+                                    <option value="dhaka">Dhaka</option>
+                                    <option value="chittagong">Chittagong</option>
+                                    <option value="rajshahi">Rajshahi</option>
+                                    <option value="khulna">Khulna</option>
+                                    <option value="barisal">Barisal</option>
+                                    <option value="sylhet">Sylhet</option>
+                                    <option value="rangpur">Rangpur</option>
+                                    <option value="mymensingh">Mymensingh</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="thana">Thana/Upazila *</label>
+                                <select id="thana" name="thana" required>
+                                    <option value="">Select District First</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullAddress">Full Address *</label>
+                            <textarea id="fullAddress" name="fullAddress" rows="3" required placeholder="House/Road/Area details"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Voucher Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-ticket-alt"></i> Voucher Code
+                        </h3>
+                        <div style="display: flex; gap: 1rem; align-items: end;">
+                            <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                <label for="voucherCode">Enter Voucher Code</label>
+                                <input type="text" id="voucherCode" name="voucherCode" placeholder="e.g., SAVE20">
+                            </div>
+                            <button type="button" onclick="applyVoucher()" class="btn btn-secondary" style="height: fit-content; padding: 0.75rem 1.5rem;">
+                                Apply
+                            </button>
+                        </div>
+                        <div id="voucherResult" style="margin-top: 0.5rem;"></div>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-credit-card"></i> Payment Method
+                        </h3>
+                        
+                        <div class="advance-payment">
+                            <h4><i class="fas fa-info-circle"></i> Advance Payment Required</h4>
+                            <p>Pay ৳100 to confirm your order</p>
+                            <div class="payment-number">Send to: 01747292277</div>
+                            <small>After payment, your order will be processed</small>
+                        </div>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-method bkash" onclick="selectPaymentMethod('bkash')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <div>bKash</div>
+                            </div>
+                            <div class="payment-method nagad" onclick="selectPaymentMethod('nagad')">
+                                <i class="fas fa-wallet"></i>
+                                <div>Nagad</div>
+                            </div>
+                            <div class="payment-method upay" onclick="selectPaymentMethod('upay')">
+                                <i class="fas fa-university"></i>
+                                <div>Upay</div>
+                            </div>
+                        </div>
+                        
+                        <div id="paymentDetails" style="display: none; margin-top: 1rem;">
+                            <div class="form-group">
+                                <label for="transactionId">Transaction ID *</label>
+                                <input type="text" id="transactionId" name="transactionId" placeholder="Enter transaction ID after payment">
+                            </div>
+                            <div class="form-group">
+                                <label for="paymentAmount">Amount Paid *</label>
+                                <input type="number" id="paymentAmount" name="paymentAmount" value="100" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-check"></i> Place Order
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+                <div id="orderItems">
+                    <!-- Order items will be loaded here -->
+                </div>
+                <div class="order-totals">
+                    <div class="total-line">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">৳0</span>
+                    </div>
+                    <div class="total-line">
+                        <span>Delivery Fee:</span>
+                        <span id="deliveryFee">৳60</span>
+                    </div>
+                    <div class="total-line" id="discountLine" style="display: none;">
+                        <span>Discount:</span>
+                        <span id="discount">৳0</span>
+                    </div>
+                    <div class="total-line final">
+                        <span>Total:</span>
+                        <span id="totalAmount">৳0</span>
+                    </div>
+                    <div class="total-line" style="color: #28a745; font-weight: 600;">
+                        <span>Advance Payment:</span>
+                        <span>৳100</span>
+                    </div>
+                    <div class="total-line" style="color: #dc3545; font-weight: 600;">
+                        <span>Due on Delivery:</span>
+                        <span id="dueAmount">৳0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

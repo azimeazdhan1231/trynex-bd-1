@@ -1,0 +1,26 @@
+
+[[deployment.rewrites]]
+from = "/admin"
+to = "/admin.html"
+
+[[deployment.rewrites]]
+from = "/products"
+to = "/products.html"
+
+[[deployment.rewrites]]
+from = "/track-order"
+to = "/track-order.html"
+
+[[deployment.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[[deployment.responseHeaders]]
+path = "/admin.html"
+name = "Cache-Control"
+value = "no-cache, no-store, must-revalidate"
+
+[[deployment.responseHeaders]]
+path = "/*"
+name = "X-Frame-Options"
+value = "DENY"

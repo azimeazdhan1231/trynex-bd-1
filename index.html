@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TryneX Lifestyle - Premium Custom Gifts</title>
+    <meta name="description" content="Premium custom gifts, personalized mugs, t-shirts, and lifestyle products. Order now with fast delivery across Bangladesh.">
+    <meta name="keywords" content="custom gifts, personalized mugs, t-shirts, lifestyle products, Bangladesh">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="TryneX Lifestyle - Premium Custom Gifts">
+    <meta property="og:description" content="Premium custom gifts, personalized mugs, t-shirts, and lifestyle products. Order now with fast delivery across Bangladesh.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://trynex-lifestyle.netlify.app">
+    <meta property="og:image" content="https://pixabay.com/get/gcfa66e036c7f90e1c4ced97d2f96804679d1370e1256ec56f9515a3334eac51ae7ab891efe48df8d49fe693118dccfed5a7c748465fed94fe3cd9003ee37ab3e_1280.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+
+    <!-- Promotional Top Banner -->
+    <div class="promo-top-banner" id="promoBanner">
+        <div class="promo-content">
+            <div class="promo-text">
+                🎉 Special Offer: Get 20% OFF on all custom products! Use code: TRYNEX20 🎉
+            </div>
+            <button class="promo-close" onclick="closePromoBanner()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-left">
+                    <div class="logo">
+                        <h1>TryneX</h1>
+                        <span>Lifestyle</span>
+                    </div>
+                </div>
+
+                <div class="nav-center">
+                    <div class="nav-links">
+                        <a href="#home" class="nav-link active">Home</a>
+                        <a href="products.html" class="nav-link">Products</a>
+                        <a href="custom-design.html" class="nav-link">Custom Design</a>
+                        <a href="track-order.html" class="nav-link">Track Order</a>
+                        <a href="#contact" class="nav-link">Contact</a>
+                    </div>
+                </div>
+
+                <div class="nav-right">
+                    <button class="nav-icon" onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="nav-icon cart-icon" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="nav-icon mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search-bar" id="searchBar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-content">
+                <a href="#home" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a>
+                <a href="products.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Products</a>
+                <a href="custom-design.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Custom Design</a>
+                <a href="track-order.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Track Order</a>
+                <a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">🎁 Premium Custom Gifts</div>
+                <h1 class="hero-title">Create Memories with Custom Gifts</h1>
+                <p class="hero-bangla">আপনার প্রিয়জনদের জন্য বিশেষ উপহার</p>
+                <p class="hero-subtitle">Personalized mugs, t-shirts, and lifestyle products crafted with love</p>
+
+                <div class="hero-offers">
+                    <div class="offer-badge premium-offer">Premium Quality</div>
+                    <div class="offer-badge delivery-offer">Fast Delivery</div>
+                    <div class="offer-badge payment-offer">Easy Payment</div>
+                </div>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary" onclick="scrollToProducts()">
+                        <i class="fas fa-shopping-bag"></i> Shop Now
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.open('https://wa.me/8801747292227', '_blank')">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Order
+                    </button>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?q=80&w=1000&auto=format&fit=crop" alt="Custom Gifts Collection">
+                <div class="floating-offers">
+                    <div class="floating-offer">🔥 20% OFF</div>
+                    <div class="floating-offer">🚚 Free Delivery</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            <p class="section-subtitle-bangla">বিভিন্ন ক্যাটাগরিতে পণ্য দেখুন</p>
+
+            <div class="categories-grid">
+                <div class="category-card" onclick="filterProducts('t-shirt')">
+                    <div class="category-image">
+                        <img src="https://pixabay.com/get/g34e410ab5055e4d9562b21a7f7a9f1c00e75c40e5b3b992ac868ca48715e304f10ae5d764737ba1dcdff83b3638ce5166db09b56b14c230c16b03e15b35638b9_1280.jpg" alt="T-Shirts">
+                    </div>
+                    <div class="category-info">
+                        <h3>T-Shirts</h3>
+                        <p class="bangla-desc">কাস্টম টি-শার্ট</p>
+                        <div class="category-offer">From ৳350</div>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('mug')">
+                    <div class="category-image">
+                        <img src="https://pixabay.com/get/g540f3ce1740df1e44769f5e3158512062b1c378c2eda6c363b500818daab02f6a1eed81f56ef73db6d167266fd7cb37d541583ba571e8821838c096661391dba_1280.jpg" alt="Mugs">
+                    </div>
+                    <div class="category-info">
+                        <h3>Custom Mugs</h3>
+                        <p class="bangla-desc">কাস্টম মগ</p>
+                        <div class="category-offer">From ৳450</div>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('keychain')">
+                    <div class="category-image">
+                        <img src="https://pixabay.com/get/g96837a600acb03e72e4119265e614681b544eeee17f1559c8cb696dcfc71c98e0e15abf4162b05638ed387b47abc283a7c72fb3a955bf6add947d0fb4b3885bd_1280.jpg" alt="Keychains">
+                    </div>
+                    <div class="category-info">
+                        <h3>Keychains</h3>
+                        <p class="bangla-desc">চাবির রিং</p>
+                        <div class="category-offer">From ৳180</div>
+                    </div>
+                </div>
+
+                <div class="category-card" onclick="filterProducts('couple')">
+                    <div class="category-image">
+                        <img src="https://pixabay.com/get/ged77a651728c41ef1f103d9b1f0a6a36e247eed249dba43982815e995a7a0255304604cbc1e0da889f23740f48f0b1ab0d89e73f95428a488ffc227eb9ccfc2b_1280.jpg" alt="Couple Items">
+                    </div>
+                    <div class="category-info">
+                        <h3>Couple Items</h3>
+                        <p class="bangla-desc">কাপল আইটেম</p>
+                        <div class="category-offer">From ৳800</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <p class="section-subtitle-bangla">আমাদের বিশেষ পণ্যসমূহ</p>
+
+            <!-- Product Filters -->
+            <div class="product-filters">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterProducts('all')">All Products</button>
+                    <button class="filter-tab" onclick="filterProducts('t-shirt')">T-Shirts</button>
+                    <button class="filter-tab" onclick="filterProducts('mug')">Mugs</button>
+                    <button class="filter-tab" onclick="filterProducts('keychain')">Keychains</button>
+                    <button class="filter-tab" onclick="filterProducts('couple')">Couple Items</button>
+                </div>
+
+                <div class="filter-sort">
+                    <select class="sort-select" onchange="sortProducts(this.value)">
+                        <option value="default">Sort by</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name">Name A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-section">
+                <button class="btn btn-outline" id="loadMoreBtn" onclick="loadMoreProducts()">
+                    Load More Products
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers Section -->
+    <section class="special-offers">
+        <div class="container">
+            <h2 class="section-title text-white">Special Offers</h2>
+            <p class="section-subtitle-bangla text-white">বিশেষ অফার সমূহ</p>
+
+            <div class="offers-grid">
+                <div class="offer-card flash-deal">
+                    <div class="offer-timer">⏰ Limited Time</div>
+                    <div class="offer-badge-card">Flash Deal</div>
+                    <h3>Custom Mug + T-Shirt Combo</h3>
+                    <p class="bangla-text">কাস্টম মগ এবং টি-শার্ট কম্বো</p>
+                    <div class="offer-price">৳850 <span style="text-decoration: line-through; color: #999;">৳1000</span></div>
+                    <button class="btn btn-primary" onclick="window.open('https://wa.me/8801747292227?text=I want the Flash Deal combo offer', '_blank')">
+                        Order Now
+                    </button>
+                </div>
+
+                <div class="offer-card combo-deal">
+                    <div class="offer-badge-card">Couple Special</div>
+                    <h3>Couple Items Package</h3>
+                    <p class="bangla-text">কাপল আইটেম প্যাকেজ</p>
+                    <div class="offer-desc">2 Custom Mugs + 2 Keychains + Gift Box</div>
+                    <div class="offer-price">৳1200 <span style="text-decoration: line-through; color: #999;">৳1500</span></div>
+                    <button class="btn btn-primary" onclick="window.open('https://wa.me/8801747292227?text=I want the Couple Items Package', '_blank')">
+                        Order Now
+                    </button>
+                </div>
+
+                <div class="offer-card gift-special">
+                    <div class="offer-badge-card">Gift Special</div>
+                    <h3>Premium Gift Set</h3>
+                    <p class="bangla-text">প্রিমিয়াম গিফট সেট</p>
+                    <div class="offer-desc">Custom Mug + T-Shirt + Keychain + Premium Packaging</div>
+                    <div class="offer-price">৳1000 <span style="text-decoration: line-through; color: #999;">৳1300</span></div>
+                    <button class="btn btn-primary" onclick="window.open('https://wa.me/8801747292227?text=I want the Premium Gift Set', '_blank')">
+                        Order Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About TryneX Lifestyle</h2>
+                    <p class="section-subtitle-bangla">আমাদের সম্পর্কে</p>
+                    <p>We are passionate about creating unique, personalized gifts that celebrate your special moments. From custom mugs to designer t-shirts, every product is crafted with attention to detail and love.</p>
+                    <p class="bangla-text">আমরা আপনার বিশেষ মুহূর্তগুলো উদযাপন করার জন্য অনন্য, ব্যক্তিগতকৃত উপহার তৈরি করতে আগ্রহী। কাস্টম মগ থেকে ডিজাইনার টি-শার্ট পর্যন্ত, প্রতিটি পণ্য বিশদ মনোযোগ এবং ভালোবাসার সাথে তৈরি করা হয়।</p>
+
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-award"></i>
+                            <div class="feature-content">
+                                <h4>Premium Quality</h4>
+                                <p>High-quality materials and printing</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-shipping-fast"></i>
+                            <div class="feature-content">
+                                <h4>Fast Delivery</h4>
+                                <p>Quick delivery across Bangladesh</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-palette"></i>
+                            <div class="feature-content">
+                                <h4>Custom Design</h4>
+                                <p>Personalized designs for every occasion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1000&auto=format&fit=crop" alt="About TryneX Lifestyle - Custom Gift Workshop">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle-bangla">যোগাযোগ করুন</p>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Address</h3>
+                            <p>Dhaka, Bangladesh</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>+880 1747 292277</p>
+                            <small style="color: #666;">Official for any queries</small>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@trynexlifestyle.com</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <h3>WhatsApp</h3>
+                            <p>+880 1747 292227</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <form onsubmit="submitContact(event)">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TryneX Lifestyle</h3>
+                    <p>Creating memories with premium custom gifts. Your satisfaction is our priority.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://wa.me/8801747292277"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="return-policy.html">Return Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="rules.html">Terms & Conditions</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh</p>
+                    <p><i class="fas fa-phone"></i> +880 1747 292277</p>
+                    <p><i class="fas fa-envelope"></i> info@trynexlifestyle.com</p>
+                    <p><i class="fab fa-whatsapp"></i> WhatsApp: +880 1747 292277</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 TryneX Lifestyle. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="return-policy.html">Return Policy</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                        <a href="rules.html">Rules</a>
+                        <i class="fas fa-cog" onclick="openAdminPanel()" style="color: #666; cursor: pointer; margin-left: 1rem; color: #666;" title="Admin Panel"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button class="close-btn" onclick="closeCartModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+
+            <div class="cart-voucher">
+                <input type="text" id="voucherInput" placeholder="Enter voucher code">
+                <button onclick="applyVoucher()">Apply</button>
+            </div>
+
+            <div class="cart-total">
+                <div class="total-item">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">৳0</span>
+                </div>
+                <div class="total-item discount-item" id="discountItem" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="cartDiscount">-৳0</span>
+                </div>
+                <div class="total-item">
+                    <span>Delivery:</span>
+                    <span id="cartDelivery">৳60</span>
+                </div>
+                <div class="total-item grand-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">৳60</span>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <button class="btn btn-outline" onclick="clearCart()">Clear Cart</button>
+                <button class="btn btn-primary" onclick="proceedToOrder()">Proceed to Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="product-modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" onclick="closeProductModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="productModalBody">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+    <script>
+        // Enhanced Cart functionality for index page
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function initializeCartModal() {
+            updateCartDisplay();
+            updateCartCount();
+        }
+
+        function toggleCart() {
+            const cartModal = document.getElementById('cartModal');
+            if (cartModal) {
+                cartModal.classList.toggle('active');
+            }
+        }
+
+        function closeCartModal() {
+            const cartModal = document.getElementById('cartModal');
+            if (cartModal) {
+                cartModal.classList.remove('active');
+            }
+        }
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            if (cartCount) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+                cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartDelivery = document.getElementById('cartDelivery');
+
+            if (!cartItems) return;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                if (cartSubtotal) cartSubtotal.textContent = '৳0';
+                if (cartTotal) cartTotal.textContent = '৳60';
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const delivery = 60;
+            const total = subtotal + delivery;
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">৳${item.price}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (cartSubtotal) cartSubtotal.textContent = `৳${subtotal}`;
+            if (cartTotal) cartTotal.textContent = `৳${total}`;
+        }
+
+        function addToCart(productId, productData) {
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    ...productData,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateCartCount();
+
+            showToast('✅ Item added to cart!', 'success');
+        }
+
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+                updateCartCount();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateCartCount();
+            showToast('🗑️ Item removed from cart', 'info');
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateCartCount();
+            showToast('🧹 Cart cleared', 'info');
+        }
+
+        function applyVoucher() {
+            const voucherInput = document.getElementById('voucherInput');
+            const discountItem = document.getElementById('discountItem');
+            const cartDiscount = document.getElementById('cartDiscount');
+
+            if (voucherInput && voucherInput.value.trim() === 'TRYNEX20') {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const discount = Math.round(subtotal * 0.2);
+
+                if (discountItem) discountItem.style.display = 'flex';
+                if (cartDiscount) cartDiscount.textContent = `-৳${discount}`;
+
+                // Update total
+                const cartTotal = document.getElementById('cartTotal');
+                const delivery = 60;
+                const newTotal = subtotal - discount + delivery;
+                if (cartTotal) cartTotal.textContent = `৳${newTotal}`;
+
+                showToast('🎉 20% discount applied!', 'success');
+                voucherInput.value = '';
+            } else {
+                showToast('❌ Invalid voucher code', 'error');
+            }
+        }
+
+        function proceedToOrder() {
+            if (cart.length === 0) {
+                showToast('⚠️ Your cart is empty', 'warning');
+                return;
+            }
+
+            showToast('🚀 Redirecting to order...', 'info');
+            setTimeout(() => {
+                window.location.href = 'checkout.html'; // Corrected redirection URL
+            }, 1000);
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 5px;
+                z-index: 10001;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                animation: slideInRight 0.3s ease;
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Admin panel access function
+        function openAdminPanel() {
+            const password = prompt("Enter admin password:");
+            if (password === "Amits@12345") {
+                window.location.href = 'admin-panel.html'; // Redirect to admin panel
+            } else {
+                showToast('❌ Incorrect password', 'error');
+            }
+        }
+
+
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCartModal();
+        });
+
+        // Make functions globally available
+        window.toggleCart = toggleCart;
+        window.closeCartModal = closeCartModal;
+        window.addToCart = addToCart;
+        window.updateQuantity = updateQuantity;
+        window.removeFromCart = removeFromCart;
+        window.clearCart = clearCart;
+        window.applyVoucher = applyVoucher;
+        window.proceedToOrder = proceedToOrder;
+        window.openAdminPanel = openAdminPanel;
+    </script>
+</body>
+</html>

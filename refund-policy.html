@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Policy - TryneX Lifestyle</title>
+    <meta name="description" content="Learn about TryneX Lifestyle's refund policy. Fast and secure refunds for eligible returns within 3-5 business days.">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+        
+        .policy-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(40, 167, 69, 0.3);
+        }
+        
+        .policy-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .policy-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .policy-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .policy-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid #28a745;
+            padding-bottom: 0.5rem;
+        }
+        
+        .policy-text {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .policy-list li {
+            background: #f8f9fa;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            position: relative;
+            padding-left: 3rem;
+        }
+        
+        .policy-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 1rem;
+            color: #28a745;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .refund-timeline {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+        
+        .timeline-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .timeline-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-step::before {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 3rem;
+            bottom: -1.5rem;
+            width: 2px;
+            background: #dee2e6;
+            z-index: 1;
+        }
+        
+        .timeline-step:last-child::before {
+            display: none;
+        }
+        
+        .step-number {
+            background: #28a745;
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .step-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .contact-box {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            color: #004085;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box i {
+            margin-right: 0.5rem;
+            color: #007bff;
+        }
+        
+        .refund-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .method-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .method-card:hover {
+            border-color: #28a745;
+            transform: translateY(-2px);
+        }
+        
+        .method-icon {
+            font-size: 2.5rem;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+        
+        .method-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .method-time {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .policy-container {
+                padding: 1rem;
+            }
+            
+            .policy-header {
+                padding: 2rem 1rem;
+            }
+            
+            .policy-title {
+                font-size: 2rem;
+            }
+            
+            .policy-content {
+                padding: 2rem 1rem;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+            }
+            
+            .refund-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="policy-container">
+        <!-- Back to Store -->
+        <div style="margin-bottom: 2rem;">
+            <a href="index.html" class="btn btn-outline" style="text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Back to Store
+            </a>
+        </div>
+        
+        <!-- Header -->
+        <div class="policy-header">
+            <h1 class="policy-title">Refund Policy</h1>
+            <p class="policy-subtitle">Fast, secure, and hassle-free refunds for all eligible returns</p>
+        </div>
+        
+        <!-- Policy Content -->
+        <div class="policy-content">
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-money-bill-wave"></i> Refund Overview
+                </h2>
+                <p class="policy-text">
+                    TryneX Lifestyle is committed to providing excellent customer service. 
+                    If you're not completely satisfied with your purchase, we offer quick and secure refunds 
+                    for all eligible returns according to our return policy.
+                </p>
+                
+                <div class="highlight-box">
+                    <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <div>3-5 Business Days</div>
+                    <small>Average refund processing time after we receive your return</small>
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i> Refund Methods
+                </h2>
+                <p class="policy-text">We process refunds using the following methods:</p>
+                
+                <div class="refund-methods">
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="method-title">Mobile Banking</div>
+                        <div class="method-time">1-2 Business Days</div>
+                    </div>
+                    
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="method-title">Bank Transfer</div>
+                        <div class="method-time">3-5 Business Days</div>
+                    </div>
+                    
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <i class="fas fa-money-bill"></i>
+                        </div>
+                        <div class="method-title">Cash on Return</div>
+                        <div class="method-time">Immediate (Selected Areas)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-list-ol"></i> Refund Process
+                </h2>
+                <p class="policy-text">Here's how our refund process works:</p>
+                
+                <div class="refund-timeline">
+                    <div class="timeline-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Return Request</div>
+                            <div class="step-description">Contact us within 7 days of delivery to initiate a return</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Return Authorization</div>
+                            <div class="step-description">We'll provide return instructions and authorization within 24 hours</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Item Inspection</div>
+                            <div class="step-description">Once we receive your return, we'll inspect it within 1-2 business days</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Refund Processing</div>
+                            <div class="step-description">Approved refunds are processed within 3-5 business days</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <div class="step-title">Confirmation</div>
+                            <div class="step-description">You'll receive confirmation once the refund is completed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-check-circle"></i> Refund Eligibility
+                </h2>
+                <p class="policy-text">To be eligible for a refund, items must meet the following criteria:</p>
+                <ul class="policy-list">
+                    <li>Returned within 7 days of delivery</li>
+                    <li>Items in original, unused condition</li>
+                    <li>Original packaging and tags intact</li>
+                    <li>Proof of purchase (order confirmation)</li>
+                    <li>No signs of damage from customer use</li>
+                </ul>
+                
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Note:</strong> Custom personalized items are only eligible for refund if they 
+                    are defective, damaged, or significantly different from what was ordered.
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-shipping-fast"></i> Shipping Costs
+                </h2>
+                <p class="policy-text">Shipping cost refund policies:</p>
+                <ul class="policy-list">
+                    <li><strong>Our Error:</strong> We cover all shipping costs (original + return)</li>
+                    <li><strong>Defective Items:</strong> Full shipping cost refund provided</li>
+                    <li><strong>Customer Preference:</strong> Original shipping costs are non-refundable</li>
+                    <li><strong>Return Shipping:</strong> Customer responsible unless item is defective</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-clock"></i> Processing Times
+                </h2>
+                <p class="policy-text">Typical refund processing times by payment method:</p>
+                
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; margin-bottom: 0.5rem;">
+                        <span>Mobile Banking (bKash, Nagad, Rocket)</span>
+                        <strong style="color: #28a745;">1-2 Days</strong>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; margin-bottom: 0.5rem;">
+                        <span>Bank Transfer</span>
+                        <strong style="color: #28a745;">3-5 Days</strong>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; margin-bottom: 0.5rem;">
+                        <span>Credit/Debit Card</span>
+                        <strong style="color: #28a745;">5-7 Days</strong>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem;">
+                        <span>Cash Refund</span>
+                        <strong style="color: #28a745;">Immediate</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-exclamation-triangle"></i> Special Cases
+                </h2>
+                <p class="policy-text">Special refund considerations:</p>
+                <ul class="policy-list">
+                    <li><strong>Partial Orders:</strong> If only part of your order arrives, contact us immediately</li>
+                    <li><strong>Damaged in Transit:</strong> Full refund plus shipping costs covered</li>
+                    <li><strong>Wrong Item Sent:</strong> Immediate replacement or full refund</li>
+                    <li><strong>Quality Issues:</strong> Full refund after quality team review</li>
+                    <li><strong>Delayed Delivery:</strong> Compensation or refund based on delay duration</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-file-alt"></i> Refund Documentation
+                </h2>
+                <p class="policy-text">
+                    All refunds are fully documented and tracked. You will receive:
+                </p>
+                <ul class="policy-list">
+                    <li>Email confirmation when refund is initiated</li>
+                    <li>SMS notification when refund is processed</li>
+                    <li>Transaction ID for your records</li>
+                    <li>Receipt showing refund amount and method</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="contact-box">
+            <h3 style="margin-bottom: 1rem; color: #333;">
+                <i class="fas fa-headset"></i> Refund Support
+            </h3>
+            <p style="color: #666; margin-bottom: 1rem;">
+                Have questions about your refund? Our dedicated support team is here to help.
+            </p>
+            <div class="contact-buttons">
+                <button class="btn btn-secondary" onclick="window.open('https://wa.me/8801747292227?text=I have a question about my refund', '_blank')">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Support
+                </button>
+                <button class="btn btn-outline" onclick="window.open('mailto:refunds@trynexlifestyle.com?subject=Refund Inquiry', '_blank')">
+                    <i class="fas fa-envelope"></i> Email Refund Team
+                </button>
+                <a href="track-order.html" class="btn btn-outline">
+                    <i class="fas fa-search"></i> Track Refund Status
+                </a>
+            </div>
+        </div>
+        
+        <!-- Footer Links -->
+        <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: white; border-radius: 10px;">
+            <h4 style="margin-bottom: 1rem; color: #333;">Related Information</h4>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="return-policy.html" class="btn btn-outline">Return Policy</a>
+                <a href="rules.html" class="btn btn-outline">Terms & Conditions</a>
+                <a href="index.html#contact" class="btn btn-outline">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - TryneX Lifestyle</title>
+    <meta name="description" content="Read TryneX Lifestyle's terms and conditions, rules and regulations for using our custom gift and lifestyle product services.">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .policy-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+        
+        .policy-header {
+            background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 123, 255, 0.3);
+        }
+        
+        .policy-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .policy-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .policy-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .policy-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+        }
+        
+        .policy-text {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .policy-list li {
+            background: #f8f9fa;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            position: relative;
+            padding-left: 3rem;
+        }
+        
+        .policy-list li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 1rem;
+            color: #007bff;
+        }
+        
+        .numbered-list {
+            counter-reset: item;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .numbered-list li {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            position: relative;
+            padding-left: 4rem;
+            counter-increment: item;
+        }
+        
+        .numbered-list li::before {
+            content: counter(item);
+            background: #007bff;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-box i {
+            margin-right: 0.5rem;
+            color: #f39c12;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            color: #004085;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box i {
+            margin-right: 0.5rem;
+            color: #007bff;
+        }
+        
+        .contact-box {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .terms-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .terms-table th,
+        .terms-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .terms-table th {
+            background: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .terms-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .policy-container {
+                padding: 1rem;
+            }
+            
+            .policy-header {
+                padding: 2rem 1rem;
+            }
+            
+            .policy-title {
+                font-size: 2rem;
+            }
+            
+            .policy-content {
+                padding: 2rem 1rem;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="policy-container">
+        <!-- Back to Store -->
+        <div style="margin-bottom: 2rem;">
+            <a href="index.html" class="btn btn-outline" style="text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Back to Store
+            </a>
+        </div>
+        
+        <!-- Header -->
+        <div class="policy-header">
+            <h1 class="policy-title">Terms & Conditions</h1>
+            <p class="policy-subtitle">Rules and regulations for using TryneX Lifestyle services</p>
+        </div>
+        
+        <!-- Policy Content -->
+        <div class="policy-content">
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i> Agreement Overview
+                </h2>
+                <p class="policy-text">
+                    Welcome to TryneX Lifestyle. These Terms and Conditions ("Terms") govern your use of our website, 
+                    products, and services. By accessing our website or making a purchase, you agree to be bound by these Terms.
+                </p>
+                
+                <div class="highlight-box">
+                    <i class="fas fa-handshake" style="font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <div>Legal Agreement</div>
+                    <small>By using our services, you accept these terms in full</small>
+                </div>
+                
+                <div class="info-box">
+                    <i class="fas fa-calendar-alt"></i>
+                    <strong>Last Updated:</strong> January 2024. We reserve the right to update these terms at any time. 
+                    Continued use of our services after changes constitutes acceptance of new terms.
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-check"></i> Eligibility & Account
+                </h2>
+                <p class="policy-text">To use our services, you must meet certain requirements:</p>
+                <ul class="policy-list">
+                    <li>Be at least 18 years old or have parental consent</li>
+                    <li>Provide accurate and complete information</li>
+                    <li>Maintain the security of your account credentials</li>
+                    <li>Use our services for lawful purposes only</li>
+                    <li>Accept responsibility for all activities under your account</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Account Security:</strong> You are responsible for maintaining the confidentiality 
+                    of your account information and for all activities that occur under your account.
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-shopping-cart"></i> Orders & Payments
+                </h2>
+                <p class="policy-text">When placing an order with TryneX Lifestyle:</p>
+                <ol class="numbered-list">
+                    <li><strong>Order Confirmation:</strong> All orders are subject to acceptance and confirmation by us</li>
+                    <li><strong>Pricing:</strong> Prices are in Bangladeshi Taka (BDT) and may change without notice</li>
+                    <li><strong>Payment:</strong> Payment must be made at the time of ordering unless otherwise arranged</li>
+                    <li><strong>Order Accuracy:</strong> You are responsible for providing accurate order details</li>
+                    <li><strong>Cancellation:</strong> We reserve the right to cancel orders for any reason</li>
+                </ol>
+                
+                <div class="table-responsive">
+                    <table class="terms-table">
+                        <thead>
+                            <tr>
+                                <th>Payment Method</th>
+                                <th>Processing Time</th>
+                                <th>Additional Info</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mobile Banking</td>
+                                <td>Instant</td>
+                                <td>bKash, Nagad, Rocket accepted</td>
+                            </tr>
+                            <tr>
+                                <td>Bank Transfer</td>
+                                <td>1-2 Hours</td>
+                                <td>Manual verification required</td>
+                            </tr>
+                            <tr>
+                                <td>Cash on Delivery</td>
+                                <td>Upon Delivery</td>
+                                <td>Selected areas only</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-palette"></i> Custom Products
+                </h2>
+                <p class="policy-text">For personalized and custom items:</p>
+                <ul class="policy-list">
+                    <li>You must own rights to any images, text, or designs provided</li>
+                    <li>We reserve the right to refuse inappropriate or copyrighted content</li>
+                    <li>Custom items may take longer to produce and ship</li>
+                    <li>Accuracy of final product depends on quality of provided materials</li>
+                    <li>Custom items are generally non-refundable unless defective</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <i class="fas fa-copyright"></i>
+                    <strong>Copyright Notice:</strong> You warrant that any content you provide does not 
+                    infringe on the intellectual property rights of any third party.
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-truck"></i> Shipping & Delivery
+                </h2>
+                <p class="policy-text">Our shipping and delivery terms:</p>
+                <ol class="numbered-list">
+                    <li><strong>Delivery Areas:</strong> We primarily serve Bangladesh with expansion plans</li>
+                    <li><strong>Delivery Times:</strong> Estimated times are not guaranteed</li>
+                    <li><strong>Shipping Costs:</strong> Calculated based on location and order value</li>
+                    <li><strong>Risk of Loss:</strong> Risk transfers to you upon delivery</li>
+                    <li><strong>Failed Delivery:</strong> Additional charges may apply for redelivery attempts</li>
+                </ol>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt"></i> Limitation of Liability
+                </h2>
+                <p class="policy-text">
+                    To the maximum extent permitted by law, TryneX Lifestyle shall not be liable for:
+                </p>
+                <ul class="policy-list">
+                    <li>Indirect, incidental, or consequential damages</li>
+                    <li>Loss of profits, data, or business opportunities</li>
+                    <li>Damages arising from third-party services or products</li>
+                    <li>Issues arising from misuse of our products</li>
+                    <li>Delays due to circumstances beyond our control</li>
+                </ul>
+                
+                <div class="info-box">
+                    <i class="fas fa-balance-scale"></i>
+                    <strong>Maximum Liability:</strong> Our total liability in any matter arising out of or 
+                    related to these terms shall not exceed the total amount paid by you for the specific 
+                    product or service that gave rise to the claim.
+                </div>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-ban"></i> Prohibited Uses
+                </h2>
+                <p class="policy-text">You may not use our services for:</p>
+                <ul class="policy-list">
+                    <li>Any unlawful or fraudulent purpose</li>
+                    <li>Creating content that is offensive, defamatory, or inappropriate</li>
+                    <li>Violating intellectual property rights</li>
+                    <li>Harassing or threatening others</li>
+                    <li>Attempting to gain unauthorized access to our systems</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-eye"></i> Privacy & Data Protection
+                </h2>
+                <p class="policy-text">
+                    We take your privacy seriously. Our collection and use of personal information is 
+                    governed by our Privacy Policy, which forms part of these Terms.
+                </p>
+                <ul class="policy-list">
+                    <li>We collect only necessary information for order processing</li>
+                    <li>Your data is protected with industry-standard security measures</li>
+                    <li>We do not sell your personal information to third parties</li>
+                    <li>You have rights regarding your personal data</li>
+                    <li>Marketing communications can be opted out at any time</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-gavel"></i> Dispute Resolution
+                </h2>
+                <p class="policy-text">
+                    In case of disputes, we encourage resolution through the following process:
+                </p>
+                <ol class="numbered-list">
+                    <li><strong>Direct Communication:</strong> Contact our customer service team first</li>
+                    <li><strong>Formal Complaint:</strong> Submit written complaint if initial contact fails</li>
+                    <li><strong>Mediation:</strong> Attempt mediation through agreed third party</li>
+                    <li><strong>Legal Action:</strong> Resort to legal proceedings if necessary</li>
+                    <li><strong>Jurisdiction:</strong> Disputes subject to laws of Bangladesh</li>
+                </ol>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-edit"></i> Modifications to Terms
+                </h2>
+                <p class="policy-text">
+                    We reserve the right to modify these Terms at any time. When we make changes:
+                </p>
+                <ul class="policy-list">
+                    <li>Updated terms will be posted on our website</li>
+                    <li>We may notify you via email or website banner</li>
+                    <li>Continued use after changes constitutes acceptance</li>
+                    <li>If you disagree with changes, discontinue use of our services</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <h2 class="section-title">
+                    <i class="fas fa-phone"></i> Contact Information
+                </h2>
+                <p class="policy-text">
+                    For questions about these Terms and Conditions, please contact us:
+                </p>
+                
+                <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin: 1rem 0;">
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                        <i class="fas fa-envelope" style="color: #007bff;"></i>
+                        <span>Email: legal@trynexlifestyle.com</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                        <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                        <span>WhatsApp: +880 1747 292227</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                        <i class="fas fa-map-marker-alt" style="color: #dc3545;"></i>
+                        <span>Address: Dhaka, Bangladesh</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center;">
+                        <i class="fas fa-clock" style="color: #28a745;"></i>
+                        <span>Business Hours: 9:00 AM - 8:00 PM (GMT+6)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Section -->
+        <div class="contact-box">
+            <h3 style="margin-bottom: 1rem; color: #333;">
+                <i class="fas fa-question-circle"></i> Questions About Terms?
+            </h3>
+            <p style="color: #666; margin-bottom: 1rem;">
+                Our legal team is available to clarify any questions about these terms and conditions.
+            </p>
+            <div class="contact-buttons">
+                <button class="btn btn-secondary" onclick="window.open('https://wa.me/8801747292227?text=I have questions about your terms and conditions', '_blank')">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Legal Team
+                </button>
+                <button class="btn btn-outline" onclick="window.open('mailto:legal@trynexlifestyle.com?subject=Terms and Conditions Inquiry', '_blank')">
+                    <i class="fas fa-envelope"></i> Email Legal Team
+                </button>
+            </div>
+        </div>
+        
+        <!-- Footer Links -->
+        <div style="text-align: center; margin-top: 2rem; padding: 2rem; background: white; border-radius: 10px;">
+            <h4 style="margin-bottom: 1rem; color: #333;">Related Policies</h4>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="return-policy.html" class="btn btn-outline">Return Policy</a>
+                <a href="refund-policy.html" class="btn btn-outline">Refund Policy</a>
+                <a href="index.html#contact" class="btn btn-outline">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

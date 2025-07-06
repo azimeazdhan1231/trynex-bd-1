@@ -1,0 +1,44 @@
+
+[build]
+  publish = "."
+  
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  from = "/products"
+  to = "/products.html"
+  status = 200
+
+[[redirects]]
+  from = "/track-order"
+  to = "/track-order.html"
+  status = 200
+
+[[redirects]]
+  from = "/track"
+  to = "/track-order.html"
+  status = 200
+
+[[redirects]]
+  from = "/return-policy"
+  to = "/return-policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/refund-policy"
+  to = "/refund-policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/rules"
+  to = "/rules.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"

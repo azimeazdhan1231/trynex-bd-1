@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Design Studio - TryneX Lifestyle</title>
+    <meta name="description" content="Create your perfect custom gift at TryneX Lifestyle. Upload images, add text, choose products, and design unique personalized items with our advanced design studio.">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase for real-time sync -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .design-studio {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+        }
+
+        .design-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .design-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .design-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .design-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .design-workspace {
+            display: block;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        
+
+        .design-controls {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .control-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .control-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            background: #f8f9ff;
+            color: #667eea;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-label:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .product-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .product-option {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-option:hover,
+        .product-option.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .product-option img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #e9ecef;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .color-option:hover,
+        .color-option.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px #667eea;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .size-option:hover,
+        .size-option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .preview-text {
+            position: absolute;
+            font-family: inherit;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .uploaded-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .uploaded-image {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #e9ecef;
+            cursor: pointer;
+        }
+
+        .uploaded-image:hover {
+            border-color: #667eea;
+        }
+
+        .price-calculator {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .price-breakdown {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .feature-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .design-workspace {
+                padding: 1rem;
+            }
+
+            .design-controls {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .design-header h1 {
+                font-size: 2rem;
+            }
+
+            .product-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        .navigation-breadcrumb {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .breadcrumb-list {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+        }
+
+        .breadcrumb-list a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-list a:hover {
+            color: white;
+        }
+
+        .inspiration-gallery {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <!-- Promotional Top Banner -->
+    <div class="promo-top-banner" id="promoBanner">
+        <div class="promo-content">
+            <div class="promo-text">
+                🎉 Special Offer: Get 20% OFF on all custom products! Use code: TRYNEX20 🎉
+            </div>
+            <button class="promo-close" onclick="closePromoBanner()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-left">
+                    <div class="logo">
+                        <h1>TryneX</h1>
+                        <span>Lifestyle</span>
+                    </div>
+                </div>
+
+                <div class="nav-center">
+                    <div class="nav-links">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="products.html" class="nav-link">Products</a>
+                        <a href="custom-design.html" class="nav-link active">Custom Design</a>
+                        <a href="track-order.html" class="nav-link">Track Order</a>
+                        <a href="index.html#contact" class="nav-link">Contact</a>
+                    </div>
+                </div>
+
+                <div class="nav-right">
+                    <button class="nav-icon" onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="nav-icon cart-icon" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="nav-icon mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search-bar" id="searchBar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-content">
+                <a href="index.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a>
+                <a href="products.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Products</a>
+                <a href="custom-design.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Custom Design</a>
+                <a href="track-order.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Track Order</a>
+                <a href="index.html#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="design-studio">
+        <div class="design-container">
+            <!-- Navigation Breadcrumb -->
+            <div class="navigation-breadcrumb">
+                <div class="breadcrumb-list">
+                    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Custom Design Studio</span>
+                </div>
+            </div>
+
+            <!-- Header -->
+            <div class="design-header">
+                <h1>Custom Design Studio</h1>
+                <p>Create your perfect personalized gift with our advanced design tools. Upload images, add custom text, and choose from our premium product collection.</p>
+            </div>
+
+            <!-- Feature Highlights -->
+            <div class="feature-highlights">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <h3 class="feature-title">Upload Any Image</h3>
+                    <p class="feature-description">Upload your favorite photos, logos, or artwork. We support high-resolution images for best quality printing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-font"></i>
+                    </div>
+                    <h3 class="feature-title">Custom Text Design</h3>
+                    <p class="feature-description">Add personalized text with various fonts, colors, and styles. Perfect for names, quotes, or special messages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">Color Customization</h3>
+                    <p class="feature-description">Choose from a wide range of colors for products and text. Match your style or brand colors perfectly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="feature-title">Real-time Preview</h3>
+                    <p class="feature-description">See your design come to life instantly. Make adjustments and see changes in real-time before ordering.</p>
+                </div>
+            </div>
+
+            <!-- Design Workspace -->
+            <div class="design-workspace">
+                <!-- Design Controls -->
+                <div class="design-controls" style="max-width: 100%; margin: 0 auto;">
+                    <!-- Product Selection -->
+                    <div class="control-section">
+                        <h3 class="control-title">
+                            <i class="fas fa-box"></i>
+                            Choose Product
+                        </h3>
+                        <div class="product-selector" id="productSelector">
+                            <div class="product-option" data-product="mug" data-price="350">
+                                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400" alt="Custom Mug">
+                                <div>Custom Mug</div>
+                                <div><strong>৳350</strong></div>
+                            </div>
+                            <div class="product-option" data-product="tshirt" data-price="450">
+                                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" alt="Custom T-Shirt">
+                                <div>Custom T-Shirt</div>
+                                <div><strong>৳450</strong></div>
+                            </div>
+                            <div class="product-option" data-product="keychain" data-price="120">
+                                <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400" alt="Custom Keychain">
+                                <div>Custom Keychain</div>
+                                <div><strong>৳120</strong></div>
+                            </div>
+                            <div class="product-option" data-product="frame" data-price="280">
+                                <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400" alt="Photo Frame">
+                                <div>Photo Frame</div>
+                                <div><strong>৳280</strong></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="control-section">
+                        <h3 class="control-title">
+                            <i class="fas fa-image"></i>
+                            Upload Images
+                        </h3>
+                        <div class="file-upload">
+                            <input type="file" id="imageUpload" class="file-input" accept="image/*" multiple>
+                            <label for="imageUpload" class="file-label">
+                                <i class="fas fa-cloud-upload-alt" style="margin-right: 0.5rem;"></i>
+                                Drop images here or click to upload
+                            </label>
+                        </div>
+                        <div class="uploaded-images" id="uploadedImages"></div>
+                    </div>
+
+                    <!-- Custom Text -->
+                    <div class="control-section">
+                        <h3 class="control-title">
+                            <i class="fas fa-font"></i>
+                            Custom Text
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">Text Content</label>
+                            <textarea id="customText" class="form-input form-textarea" placeholder="Enter your custom text, names, quotes, or messages..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Font Size</label>
+                            <input type="range" id="fontSize" class="form-input" min="12" max="48" value="24">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Text Color</label>
+                            <div class="color-picker">
+                                <div class="color-option" data-color="#000000" style="background: #000000;"></div>
+                                <div class="color-option" data-color="#ffffff" style="background: #ffffff;"></div>
+                                <div class="color-option" data-color="#ff0000" style="background: #ff0000;"></div>
+                                <div class="color-option" data-color="#00ff00" style="background: #00ff00;"></div>
+                                <div class="color-option" data-color="#0000ff" style="background: #0000ff;"></div>
+                                <div class="color-option" data-color="#ffff00" style="background: #ffff00;"></div>
+                                <div class="color-option" data-color="#ff00ff" style="background: #ff00ff;"></div>
+                                <div class="color-option" data-color="#00ffff" style="background: #00ffff;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Size Selection -->
+                    <div class="control-section">
+                        <h3 class="control-title">
+                            <i class="fas fa-ruler"></i>
+                            Size Options
+                        </h3>
+                        <div class="size-options" id="sizeOptions">
+                            <div class="size-option" data-size="small" data-price="0">Small</div>
+                            <div class="size-option selected" data-size="medium" data-price="0">Medium</div>
+                            <div class="size-option" data-size="large" data-price="50">Large (+৳50)</div>
+                            <div class="size-option" data-size="xl" data-price="100">XL (+৳100)</div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Information -->
+                    <div class="control-section">
+                        <h3 class="control-title">
+                            <i class="fas fa-user"></i>
+                            Your Information
+                        </h3>
+                        <div class="form-group">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" id="customerName" class="form-input" placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="customerPhone" class="form-input" placeholder="+880 1XXX XXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email (Optional)</label>
+                            <input type="email" id="customerEmail" class="form-input" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Special Instructions</label>
+                            <textarea id="specialInstructions" class="form-input form-textarea" placeholder="Any special requests or instructions for your design..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Price Calculator -->
+                    <div class="price-calculator">
+                        <h3>Price Breakdown</h3>
+                        <div class="price-breakdown">
+                            <span>Base Price:</span>
+                            <span id="basePrice">৳0</span>
+                        </div>
+                        <div class="price-breakdown">
+                            <span>Size Upgrade:</span>
+                            <span id="sizePrice">৳0</span>
+                        </div>
+                        <div class="price-breakdown">
+                            <span>Custom Design:</span>
+                            <span id="customPrice">৳50</span>
+                        </div>
+                        <div class="price-breakdown">
+                            <span>Delivery:</span>
+                            <span id="deliveryPrice">৳60</span>
+                        </div>
+                        <div class="total-price">
+                            Total: <span id="totalPrice">৳110</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-secondary" onclick="resetDesign()">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                        <button class="btn-primary" onclick="submitCustomOrder()">
+                            <i class="fas fa-shopping-cart"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Inspiration Gallery -->
+            <div class="inspiration-gallery">
+                <h2 class="gallery-title">Design Inspiration</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item" onclick="loadInspiration('couple')">
+                        <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=400" alt="Couple Design">
+                    </div>
+                    <div class="gallery-item" onclick="loadInspiration('family')">
+                        <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400" alt="Family Design">
+                    </div>
+                    <div class="gallery-item" onclick="loadInspiration('birthday')">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400" alt="Birthday Design">
+                    </div>
+                    <div class="gallery-item" onclick="loadInspiration('motivational')">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400" alt="Motivational Design">
+                    </div>
+                    <div class="gallery-item" onclick="loadInspiration('business')">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400" alt="Business Design">
+                    </div>
+                    <div class="gallery-item" onclick="loadInspiration('anniversary')">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400" alt="Anniversary Design">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TryneX Lifestyle</h3>
+                <p>Creating personalized memories through custom gifts and lifestyle products.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="custom-design.html">Custom Design</a></li>
+                    <li><a href="track-order.html">Track Order</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Policies</h4>
+                <ul>
+                    <li><a href="return-policy.html">Return Policy</a></li>
+                    <li><a href="refund-policy.html">Refund Policy</a></li>
+                    <li><a href="rules.html">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-phone"></i> +880 1747 292277</p>
+                <p><i class="fas fa-envelope"></i> info@trynexlifestyle.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh</p>
+                
+                <!-- Hidden admin access trigger -->
+                <div class="admin-trigger" onclick="adminAccess()">
+                    <i class="fas fa-cog"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 TryneX Lifestyle. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button class="close-btn" onclick="closeCartModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+
+            <div class="cart-voucher">
+                <input type="text" id="voucherInput" placeholder="Enter voucher code">
+                <button onclick="applyVoucher()">Apply</button>
+            </div>
+
+            <div class="cart-total">
+                <div class="total-item">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">৳0</span>
+                </div>
+                <div class="total-item discount-item" id="discountItem" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="cartDiscount">-৳0</span>
+                </div>
+                <div class="total-item">
+                    <span>Delivery:</span>
+                    <span id="cartDelivery">৳60</span>
+                </div>
+                <div class="total-item grand-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">৳60</span>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <button class="btn btn-outline" onclick="clearCart()">Clear Cart</button>
+                <button class="btn btn-primary" onclick="proceedToOrder()">Proceed to Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+    <script src="custom-design.js"></script>
+</body>
+</html>

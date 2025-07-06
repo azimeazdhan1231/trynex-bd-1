@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - TryneX Lifestyle</title>
+    <meta name="description" content="Browse all custom gifts, personalized mugs, t-shirts, and lifestyle products at TryneX Lifestyle.">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+    <script src="env-config.js"></script>
+</head>
+<body>
+    <!-- Promotional Top Banner -->
+    <div class="promo-top-banner" id="promoBanner">
+        <div class="promo-content">
+            <div class="promo-text">
+                🎉 Special Offer: Get 20% OFF on all custom products! Use code: TRYNEX20 🎉
+            </div>
+            <button class="promo-close" onclick="closePromoBanner()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-left">
+                    <div class="logo">
+                        <h1>TryneX</h1>
+                        <span>Lifestyle</span>
+                    </div>
+                </div>
+
+                <div class="nav-center">
+                    <div class="nav-links">
+                        <a href="index.html" class="nav-link">Home</a>
+                        <a href="products.html" class="nav-link active">Products</a>
+                        <a href="custom-design.html" class="nav-link">Custom Design</a>
+                        <a href="track-order.html" class="nav-link">Track Order</a>
+                        <a href="index.html#contact" class="nav-link">Contact</a>
+                    </div>
+                </div>
+
+                <div class="nav-right">
+                    <button class="nav-icon" onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="nav-icon cart-icon" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                    <button class="nav-icon mobile-menu-btn" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search-bar" id="searchBar">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <div class="mobile-menu">
+            <div class="mobile-menu-header">
+                <h3>Menu</h3>
+                <button class="close-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-content">
+                <a href="index.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a>
+                <a href="products.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Products</a>
+                <a href="custom-design.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Custom Design</a>
+                <a href="track-order.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Track Order</a>
+                <a href="index.html#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 0 2rem; text-align: center;">
+        <div class="container">
+            <div class="page-header-content">
+                <div class="breadcrumb" style="background: rgba(255,255,255,0.1); padding: 0.75rem 1.5rem; border-radius: 25px; display: inline-block; margin-bottom: 2rem; font-weight: 500;">
+                    <a href="index.html" style="color: rgba(255,255,255,0.8); text-decoration: none;">🏠 Home</a> > <span style="color: white;">📦 Products</span>
+                </div>
+                <h1 class="page-title" style="font-size: 3rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">All Products</h1>
+                <p class="page-subtitle" style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 0.5rem;">Discover our complete collection of custom gifts and lifestyle products</p>
+                <p class="page-subtitle-bangla" style="font-size: 1.1rem; opacity: 0.8;">আমাদের সম্পূর্ণ কাস্টম গিফট এবং লাইফস্টাইল পণ্যের সংগ্রহ দেখুন</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-page">
+        <div class="container">
+
+            <!-- Enhanced Product Filters -->
+            <div class="product-filters-enhanced">
+                <div class="filter-section">
+                    <h3>Categories</h3>
+                    <div class="category-filters">
+                        <button class="category-filter-btn active" data-category="all" onclick="filterByCategory('all', this)">
+                            <i class="fas fa-th"></i>
+                            <span>All Products</span>
+                            <span class="count" id="count-all">0</span>
+                        </button>
+                        <button class="category-filter-btn" data-category="mug" onclick="filterByCategory('mug', this)">
+                            <i class="fas fa-coffee"></i>
+                            <span>Mugs</span>
+                            <span class="count" id="count-mug">0</span>
+                        </button>
+                        <button class="category-filter-btn" data-category="t-shirt" onclick="filterByCategory('t-shirt', this)">
+                            <i class="fas fa-tshirt"></i>
+                            <span>T-Shirts</span>
+                            <span class="count" id="count-t-shirt">0</span>
+                        </button>
+                        <button class="category-filter-btn" data-category="keychain" onclick="filterByCategory('keychain', this)">
+                            <i class="fas fa-key"></i>
+                            <span>Keychains</span>
+                            <span class="count" id="count-keychain">0</span>
+                        </button>
+                        <button class="category-filter-btn" data-category="couple" onclick="filterByCategory('couple', this)">
+                            <i class="fas fa-heart"></i>
+                            <span>Couple Items</span>
+                            <span class="count" id="count-couple">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Sort & Filter</h3>
+                    <div class="sort-filter-controls">
+                        <select class="sort-select" onchange="sortProducts(this.value)">
+                            <option value="default">Sort by</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name A-Z</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+
+                        <div class="price-range">
+                            <label>Price Range:</label>
+                            <select onchange="filterByPrice(this.value)">
+                                <option value="all">All Prices</option>
+                                <option value="0-300">৳0 - ৳300</option>
+                                <option value="300-500">৳300 - ৳500</option>
+                                <option value="500-800">৳500 - ৳800</option>
+                                <option value="800+">৳800+</option>
+                            </select>
+                        </div>
+
+                        <button class="reset-filters-btn" onclick="resetFilters()">
+                            <i class="fas fa-undo"></i> Reset Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid-container">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Load More Section -->
+            <div class="load-more-section">
+                <div class="showing-info">
+                    <span id="showingInfo">Showing 1-20 of 0 products</span>
+                </div>
+                <button class="btn btn-outline" id="loadMoreBtn" onclick="loadMoreProducts()">
+                    <i class="fas fa-plus"></i> Load More Products
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TryneX Lifestyle</h3>
+                    <p>Creating memories with premium custom gifts. Your satisfaction is our priority.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://wa.me/8801747292277"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                        <li><a href="track-order.html">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Policies</h4>
+                    <ul>
+                        <li><a href="return-policy.html">Return Policy</a></li>
+                        <li><a href="refund-policy.html">Refund Policy</a></li>
+                        <li><a href="rules.html">Terms & Conditions</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh</p>
+                    <p><i class="fas fa-phone"></i> +880 1747 292277</p>
+                    <p><i class="fas fa-envelope"></i> info@trynexlifestyle.com</p>
+                    <p><i class="fab fa-whatsapp"></i> WhatsApp: +880 1747 292277</p>
+
+                    <!-- Hidden admin access trigger -->
+                    <div class="admin-trigger" onclick="adminAccess()">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="footer-bottom-content">
+                        <p>&copy; 2025 TryneX Lifestyle. All rights reserved.</p>
+                        <div class="footer-links">
+                            <a href="return-policy.html">Return Policy</a>
+                            <a href="refund-policy.html">Refund Policy</a>
+                            <a href="rules.html">Rules</a>
+                            <i class="fas fa-cog admin-trigger" onclick="adminAccess()" style="cursor: pointer; margin-left: 1rem; color: #666;" title="Admin Access (Click 3 times)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button class="close-btn" onclick="closeCartModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+
+            <div class="cart-voucher">
+                <input type="text" id="voucherInput" placeholder="Enter voucher code">
+                <button onclick="applyVoucher()">Apply</button>
+            </div>
+
+            <div class="cart-total">
+                <div class="total-item">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">৳0</span>
+                </div>
+                <div class="total-item discount-item" id="discountItem" style="display: none;">
+                    <span>Discount:</span>
+                    <span id="cartDiscount">-৳0</span>
+                </div>
+                <div class="total-item">
+                    <span>Delivery:</span>
+                    <span id="cartDelivery">৳60</span>
+                </div>
+                <div class="total-item grand-total">
+                    <span>Total:</span>
+                    <span id="cartTotal">৳60</span>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <button class="btn btn-outline" onclick="clearCart()">Clear Cart</button>
+                <button class="btn btn-primary" onclick="proceedToOrder()">Proceed to Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="product-modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" onclick="closeProductModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="productModalBody">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+    <script src="products.js"></script>
+    <script>
+        // Enhanced Cart functionality for products page
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function initializeCartModal() {
+            updateCartDisplay();
+            updateCartCount();
+        }
+
+        function toggleCart() {
+            const cartModal = document.getElementById('cartModal');
+            if (cartModal) {
+                cartModal.classList.toggle('active');
+            }
+        }
+
+        function closeCartModal() {
+            const cartModal = document.getElementById('cartModal');
+            if (cartModal) {
+                cartModal.classList.remove('active');
+            }
+        }
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            if (cartCount) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+                cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartDelivery = document.getElementById('cartDelivery');
+
+            if (!cartItems) return;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                if (cartSubtotal) cartSubtotal.textContent = '৳0';
+                if (cartTotal) cartTotal.textContent = '৳60';
+                return;
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const delivery = 60;
+            const total = subtotal + delivery;
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">৳${item.price}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (cartSubtotal) cartSubtotal.textContent = `৳${subtotal}`;
+            if (cartTotal) cartTotal.textContent = `৳${total}`;
+        }
+
+        function addToCart(productId, productData) {
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    ...productData,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateCartCount();
+
+            showToast('✅ Item added to cart!', 'success');
+        }
+
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+                updateCartCount();
+            }
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateCartCount();
+            showToast('🗑️ Item removed from cart', 'info');
+        }
+
+        function clearCart() {
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+            updateCartCount();
+            showToast('🧹 Cart cleared', 'info');
+        }
+
+        function applyVoucher() {
+            const voucherInput = document.getElementById('voucherInput');
+            const discountItem = document.getElementById('discountItem');
+            const cartDiscount = document.getElementById('cartDiscount');
+
+            if (voucherInput && voucherInput.value.trim() === 'TRYNEX20') {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const discount = Math.round(subtotal * 0.2);
+
+                if (discountItem) discountItem.style.display = 'flex';
+                if (cartDiscount) cartDiscount.textContent = `-৳${discount}`;
+
+                // Update total
+                const cartTotal = document.getElementById('cartTotal');
+                const delivery = 60;
+                const newTotal = subtotal - discount + delivery;
+                if (cartTotal) cartTotal.textContent = `৳${newTotal}`;
+
+                showToast('🎉 20% discount applied!', 'success');
+                voucherInput.value = '';
+            } else {
+                showToast('❌ Invalid voucher code', 'error');
+            }
+        }
+
+        function proceedToOrder() {
+            if (cart.length === 0) {
+                showToast('⚠️ Your cart is empty', 'warning');
+                return;
+            }
+
+            showToast('🚀 Redirecting to order...', 'info');
+            setTimeout(() => {
+                window.location.href = 'track-order.html';
+            }, 1000);
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 5px;
+                z-index: 10001;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                animation: slideInRight 0.3s ease;
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCartModal();
+        });
+
+        // Make functions globally available
+        window.toggleCart = toggleCart;
+        window.closeCartModal = closeCartModal;
+        window.addToCart = addToCart;
+        window.updateQuantity = updateQuantity;
+        window.removeFromCart = removeFromCart;
+        window.clearCart = clearCart;
+        window.applyVoucher = applyVoucher;
+        window.proceedToOrder = proceedToOrder;
+    </script>
+</body>
+</html>

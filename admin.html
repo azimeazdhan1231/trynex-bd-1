@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TryneX Lifestyle</title>
+    <meta name="description" content="Admin dashboard for TryneX Lifestyle e-commerce platform. Manage products, orders, and customer data.">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+    <script src="env-config.js"></script>
+
+    <!-- Admin Specific Styles -->
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #FFD700;
+            --accent-color: #FFF8DC;
+            --text-color: #2d2d2d;
+            --white: #ffffff;
+            --gray: #555555;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --shadow: 0 4px 15px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+            --border-radius: 10px;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        /* Admin Container */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* Admin Header */
+        .admin-header {
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav-btn {
+            background: #FFD700;
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-nav-btn:hover,
+        .admin-nav-btn.active {
+            background: #FFA500;
+            transform: translateY(-2px);
+        }
+
+        /* Admin Sections */
+        .admin-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: #FFD700;
+            color: #000;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #FFA500;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-edit {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background: #218838;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Order Cards */
+        .order-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-processing { background: #d1ecf1; color: #0c5460; }
+        .status-shipped { background: #d4edda; color: #155724; }
+        .status-delivered { background: #d1f2eb; color: #00695c; }
+
+        .order-details p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Voucher Cards */
+        .voucher-card, .promotion-card, .category-card, .featured-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .voucher-header, .promotion-header, .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .voucher-type, .promotion-type {
+            background: #FFD700;
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .category-count {
+            background: #28a745;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .voucher-details, .promotion-details, .category-details {
+            margin-bottom: 1rem;
+        }
+
+        .voucher-details p, .promotion-details p, .category-details p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        .voucher-actions, .promotion-actions, .category-actions, .featured-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Featured Items */
+        .featured-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .featured-info h4 {
+            margin: 0.5rem 0;
+            color: #333;
+        }
+
+        .featured-badge {
+            background: #FFD700;
+            color: #000;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Grid Layouts */
+        #ordersGrid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        #vouchersGrid, #promotionsGrid, #categoriesGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        #featuredItemsGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .admin-container { padding: 1rem; }
+            .admin-header { flex-direction: column; text-align: center; }
+            .admin-nav { width: 100%; justify-content: center; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .order-actions, .voucher-actions, .promotion-actions { 
+                flex-direction: column; 
+            }
+            #vouchersGrid, #promotionsGrid, #categoriesGrid, #featuredItemsGrid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Enhanced admin authentication with perfect redirect
+        function authenticateAdmin() {
+            return new Promise((resolve, reject) => {
+                const isAuthenticated = localStorage.getItem('admin_authenticated');
+                const sessionTime = localStorage.getItem('admin_session');
+
+                // Check if already authenticated and session is valid
+                if (isAuthenticated && sessionTime) {
+                    const sessionAge = Date.now() - parseInt(sessionTime);
+                    if (sessionAge < 24 * 60 * 60 * 1000) {
+                        resolve(true);
+                        return;
+                    } else {
+                        // Clear expired session
+                        localStorage.removeItem('admin_authenticated');
+                        localStorage.removeItem('admin_session');
+                    }
+                }
+
+                // Show authentication dialog
+                showAuthDialog(resolve, reject);
+            });
+        }
+
+        function showAuthDialog(resolve, reject) {
+            // Create custom auth modal
+            const authModal = document.createElement('div');
+            authModal.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                    font-family: 'Poppins', sans-serif;
+                ">
+                    <div style="
+                        background: white;
+                        padding: 2rem;
+                        border-radius: 10px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                        text-align: center;
+                        min-width: 300px;
+                    ">
+                        <h2 style="margin-bottom: 1rem; color: #333;">🔐 Admin Access</h2>
+                        <p style="margin-bottom: 1.5rem; color: #666;">Enter admin password to continue</p>
+                        <input type="password" id="adminPassword" placeholder="Enter password" style="
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 2px solid #ddd;
+                            border-radius: 5px;
+                            font-size: 1rem;
+                            margin-bottom: 1rem;
+                        ">
+                        <div>
+                            <button id="loginBtn" style="
+                                background: #FFD700;
+                                color: #000;
+                                border: none;
+                                padding: 0.75rem 2rem;
+                                border-radius: 5px;
+                                font-weight: 600;
+                                cursor: pointer;
+                                margin-right: 0.5rem;
+                            ">Login</button>
+                            <button id="cancelBtn" style="
+                                background: #dc3545;
+                                color: white;
+                                border: none;
+                                padding: 0.75rem 2rem;
+                                border-radius: 5px;
+                                font-weight: 600;
+                                cursor: pointer;
+                            ">Cancel</button>
+                        </div>
+                        <div id="errorMsg" style="
+                            color: #dc3545;
+                            margin-top: 1rem;
+                            display: none;
+                        "></div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(authModal);
+
+            const passwordInput = document.getElementById('adminPassword');
+            const loginBtn = document.getElementById('loginBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const errorMsg = document.getElementById('errorMsg');
+
+            // Focus on password input
+            passwordInput.focus();
+
+            function validateAndLogin() {
+                const password = passwordInput.value.trim();
+
+                if (password === 'Amits@12345') {
+                    // Successful authentication
+                    localStorage.setItem('admin_authenticated', 'true');
+                    localStorage.setItem('admin_session', Date.now().toString());
+
+                    // Show success message
+                    authModal.querySelector('div > div').innerHTML = `
+                        <h2 style="color: #28a745; margin-bottom: 1rem;">✅ Authentication Successful!</h2>
+                        <p style="color: #666;">Redirecting to admin panel...</p>
+                    `;
+
+                    // Remove modal and resolve after short delay
+                    setTimeout(() => {
+                        document.body.removeChild(authModal);
+                        resolve(true);
+                    }, 1000);
+
+                } else if (password.trim() === '') {
+                    errorMsg.textContent = 'Please enter a password';
+                    errorMsg.style.display = 'block';
+                    passwordInput.focus();
+                } else {
+                    errorMsg.textContent = 'Invalid password! Please try again.';
+                    errorMsg.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }
+
+            function cancelLogin() {
+                document.body.removeChild(authModal);
+                // Redirect to main site
+                window.location.href = 'index.html';
+                reject(false);
+            }
+
+            // Event listeners
+            loginBtn.addEventListener('click', validateAndLogin);
+            cancelBtn.addEventListener('click', cancelLogin);
+
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    validateAndLogin();
+                }
+            });
+
+            // Hide error message when typing
+            passwordInput.addEventListener('input', function() {
+                errorMsg.style.display = 'none';
+            });
+        }
+
+        // Initialize admin panel with authentication
+        async function initializeAdminPanel() {
+            try {
+                // Check for direct access via URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('admin') === 'true') {
+                    const directPassword = prompt('Enter admin password:');
+                    if (directPassword === 'Amits@12345') {
+                        localStorage.setItem('admin_authenticated', 'true');
+                        localStorage.setItem('admin_session', Date.now().toString());
+                        document.querySelector('.admin-container').style.display = 'block';
+                        console.log('🔐 Direct admin access granted');
+                        return;
+                    }
+                }
+
+                const isAuthenticated = await authenticateAdmin();
+
+                if (isAuthenticated) {
+                    // Show admin content
+                    document.querySelector('.admin-container').style.display = 'block';
+                    console.log('🔐 Admin authenticated successfully');
+                } else {
+                    // Redirect to main site
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Hide admin content initially
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.admin-container').style.display = 'none';
+            initializeAdminPanel();
+        });
+    </script>
+
+    <div class="admin-container">
+        <!-- Admin Header -->
+        <div class="admin-header">
+            <div>
+                <h1 class="admin-title"><i class="fas fa-cog"></i> Admin Dashboard</h1>
+                <p>Manage your TryneX Lifestyle store</p>
+            </div>
+            <div class="admin-nav">
+                <button class="admin-nav-btn active" onclick="showSection('dashboard', this)">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('products', this)">
+                    <i class="fas fa-box"></i> Products
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('orders', this)">
+                    <i class="fas fa-shopping-cart"></i> Orders
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('vouchers', this)">
+                    <i class="fas fa-ticket-alt"></i> Vouchers
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('promotions', this)">
+                    <i class="fas fa-bullhorn"></i> Promotions
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('categories', this)">
+                    <i class="fas fa-tags"></i> Categories
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('featured', this)">
+                    <i class="fas fa-star"></i> Featured
+                </button>
+                <button class="admin-nav-btn" onclick="showSection('site-settings', this)">
+                    <i class="fas fa-cog"></i> Site Settings
+                </button>
+                <button class="admin-nav-btn" onclick="window.location.href='index.html'">
+                    <i class="fas fa-store"></i> Back to Store
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="admin-section active">
+            <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-box"></i>
+                    <div class="stat-number" id="totalProducts">44</div>
+                    <div class="stat-label">Total Products</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <div class="stat-number" id="totalOrders">6</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-number" id="pendingOrders">6</div>
+                    <div class="stat-label">Pending Orders</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div class="stat-number" id="totalRevenue">৳0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div id="productsSection" class="admin-section">
+            <h2><i class="fas fa-box"></i> Product Management</h2>
+
+            <!-- Add Product Form -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3><i class="fas fa-plus"></i> Add New Product</h3>
+                <form id="addProductForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" name="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productPrice">Price (৳) *</label>
+                            <input type="number" id="productPrice" name="productPrice" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productCategory">Category *</label>
+                            <select id="productCategory" name="productCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="mug">Mugs</option>
+                                <option value="t-shirt">T-Shirts</option>
+                                <option value="keychain">Keychains</option>
+                                <option value="couple">Couple Items</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productImage">Product Image</label>
+                            <input type="url" id="productImage" name="image_url" placeholder="https://example.com/image.jpg" style="margin-bottom: 10px;">
+                            <div style="margin: 10px 0; text-align: center; color: #666;">OR</div>
+                            <input type="file" id="productImageFile" name="image_file" accept="image/*" style="margin-top: 10px;">
+                            <small style="display: block; margin-top: 5px; color: #666;">
+                                Upload an image file or provide a URL. Uploaded images will be stored securely.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description *</label>
+                        <textarea id="productDescription" name="productDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productFeature">Feature</label>
+                            <input type="text" id="productFeature" name="productFeature" placeholder="e.g., Premium Quality">
+                        </div>
+                        <div class="form-group">
+                            <label for="productBadge">Badge</label>
+                            <input type="text" id="productBadge" name="productBadge" placeholder="e.g., 🔥 Hot">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </form>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="ordersSection" class="admin-section">
+            <h2><i class="fas fa-shopping-cart"></i> Order Management</h2>
+            <div id="ordersGrid">
+                <p>Orders will appear here when customers place them.</p>
+            </div>
+        </div>
+
+        <!-- Vouchers Section -->
+        <div id="vouchersSection" class="admin-section">
+            <h2><i class="fas fa-ticket-alt"></i> Voucher Management</h2>
+
+            <!-- Add Voucher Form -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3><i class="fas fa-plus"></i> Add New Voucher</h3>
+                <form id="addVoucherForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="voucherCode">Voucher Code *</label>
+                            <input type="text" id="voucherCode" name="voucherCode" required placeholder="e.g., SAVE20">
+                        </div>
+                        <div class="form-group">
+                            <label for="voucherType">Discount Type *</label>
+                            <select id="voucherType" name="voucherType" required>
+                                <option value="">Select Type</option>
+                                <option value="percentage">Percentage</option>
+                                <option value="fixed">Fixed Amount</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="voucherValue">Discount Value *</label>
+                            <input type="number" id="voucherValue" name="voucherValue" required placeholder="e.g., 20 or 100">
+                        </div>
+                        <div class="form-group">
+                            <label for="voucherExpiry">Expiry Date</label>
+                            <input type="date" id="voucherExpiry" name="voucherExpiry">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="voucherDescription">Description</label>
+                        <textarea id="voucherDescription" name="voucherDescription" rows="2" placeholder="Voucher description for customers"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Voucher
+                    </button>
+                </form>
+            </div>
+
+            <!-- Vouchers Grid -->
+            <div id="vouchersGrid">
+                <!-- Vouchers will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Promotions Section -->
+        <div id="promotionsSection" class="admin-section">
+            <h2><i class="fas fa-bullhorn"></i> Promotion Management</h2>
+
+            <!-- Add Promotion Form -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3><i class="fas fa-plus"></i> Add New Promotion</h3>
+                <form id="addPromotionForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="promotionTitle">Promotion Title *</label>
+                            <input type="text" id="promotionTitle" name="promotionTitle" required placeholder="e.g., Summer Special Offer">
+                        </div>
+                        <div class="form-group">
+                            <label for="promotionType">Discount Type *</label>
+                            <select id="promotionType" name="promotionType" required>
+                                <option value="">Select Type</option>
+                                <option value="percentage">Percentage</option>
+                                <option value="fixed">Fixed Amount</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="promotionValue">Discount Value *</label>
+                            <input type="number" id="promotionValue" name="promotionValue" required placeholder="e.g., 25 or 200">
+                        </div>
+                        <div class="form-group">
+                            <label for="promotionPopup">Enable Popup</label>
+                            <input type="checkbox" id="promotionPopup" name="promotionPopup" style="width: auto; margin-right: 0.5rem;">
+                            <span>Show as popup on website</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="promotionDescription">Description *</label>
+                        <textarea id="promotionDescription" name="promotionDescription" rows="2" required placeholder="Promotion description"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="promotionStart">Start Date</label>
+                            <input type="date" id="promotionStart" name="promotionStart">
+                        </div>
+                        <div class="form-group">
+                            <label for="promotionEnd">End Date</label>
+                            <input type="date"The code adds an environment configuration script to the admin page to handle Supabase credentials using Netlify environment variables. id="promotionEnd" name="promotionEnd">
+                        </div>
+                    </div>
+                    <div id="popupSettings" style="display: none; background: #e9ecef; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                        <h4>Popup Settings</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="popupTitle">Popup Title</label>
+                                <input type="text" id="popupTitle" name="popupTitle" placeholder="e.g., 🌞 Summer Special!">
+                            </div>
+                            <div class="form-group">
+                                <label for="buttonText">Button Text</label>
+                                <input type="text" id="buttonText" name="buttonText" placeholder="e.g., Shop Now">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="popupMessage">Popup Message</label>
+                            <textarea id="popupMessage" name="popupMessage" rows="2" placeholder="Message shown in popup"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Promotion
+                    </button>
+                </form>
+            </div>
+
+            <!-- Promotions Grid -->
+            <div id="promotionsGrid">
+                <!-- Promotions will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <div id="categoriesSection" class="admin-section">
+            <h2><i class="fas fa-tags"></i> Category Management</h2>
+
+            <!-- Add Category Form -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3><i class="fas fa-plus"></i> Add New Category</h3>
+                <form id="addCategoryForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="categoryName">Category Name *</label>
+                            <input type="text" id="categoryName" name="categoryName" required placeholder="e.g., Mugs">
+                        </div>
+                        <div class="form-group">
+                            <label for="categorySlug">Category Slug *</label>
+                            <input type="text" id="categorySlug" name="categorySlug" required placeholder="e.g., mug">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="categoryImage">Category Image URL *</label>
+                            <input type="url" id="categoryImage" name="categoryImage" required placeholder="https://example.com/image.jpg">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryIcon">Category Icon</label>
+                            <input type="text" id="categoryIcon" name="categoryIcon" placeholder="fas fa-coffee">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryDescription">Description</label>
+                        <textarea id="categoryDescription" name="categoryDescription" rows="2" placeholder="Category description"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                </form>
+            </div>
+
+            <!-- Categories Grid -->
+            <div id="categoriesGrid">
+                <!-- Categories will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Featured Items Section -->
+        <div id="featuredSection" class="admin-section">
+            <h2><i class="fas fa-star"></i> Featured Items Management</h2>
+
+            <!-- Featured Items Configuration -->
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3><i class="fas fa-star"></i> Select Featured Products</h3>
+                <div class="form-group">
+                    <label>Select products to feature on homepage:</label>
+                    <div id="featuredProductsSelector">
+                        <!-- Product selection will be loaded here -->
+                    </div>
+                </div>
+                <button type="button" class="btn-primary" onclick="saveFeaturedProducts()">
+                    <i class="fas fa-save"></i> Save Featured Products
+                </button>
+            </div>
+
+            <!-- Current Featured Items Display -->
+            <div id="currentFeaturedItems">
+                <h3>Currently Featured Items</h3>
+                <div id="featuredItemsGrid">
+                    <!-- Featured items will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Site Settings Section -->
+        <div id="site-settingsSection" class="admin-section">
+            <h2><i class="fas fa-cog"></i> Site Settings & Design Control</h2>
+
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+                <h3><i class="fas fa-edit"></i> Content Settings</h3>
+                <form id="siteSettingsForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="siteName">Site Name *</label>
+                            <input type="text" id="siteName" name="siteName" placeholder="TryneX Lifestyle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="heroTitle">Hero Title *</label>
+                            <input type="text" id="heroTitle" name="heroTitle" placeholder="Premium Custom Gifts" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="heroSubtitle">Hero Subtitle *</label>
+                        <input type="text" id="heroSubtitle" name="heroSubtitle" placeholder="Personalized products for every occasion" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactPhone">Contact Phone *</label>
+                            <input type="tel" id="contactPhone" name="contactPhone" placeholder="+880 1747 292227" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Contact Email *</label>
+                            <input type="email" id="contactEmail" name="contactEmail" placeholder="info@trynexlifestyle.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="aboutText">About Text *</label>
+                        <textarea id="aboutText" name="aboutText" rows="4" placeholder="About your business..." required></textarea>
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 1rem;"><i class="fas fa-palette"></i> Design & Styling (Live Preview)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="primaryColor">Primary Color</label>
+                            <input type="color" id="primaryColor" name="primaryColor" value="#1a1a1a" style="height: 50px;">
+                            <small style="color: #666;">Main background and text color</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="secondaryColor">Secondary Color (Gold)</label>
+                            <input type="color" id="secondaryColor" name="secondaryColor" value="#FFD700" style="height: 50px;">
+                            <small style="color: #666;">Buttons and accent elements</small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="accentColor">Accent Color</label>
+                            <input type="color" id="accentColor" name="accentColor" value="#FFF8DC" style="height: 50px;">
+                            <small style="color: #666;">Backgrounds and subtle elements</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="fontFamily">Font Family</label>
+                            <select id="fontFamily" name="fontFamily">
+                                <option value="Poppins">Poppins (Current)</option>
+                                <option value="Inter">Inter</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Montserrat">Montserrat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="borderRadius">Border Radius</label>
+                            <select id="borderRadius" name="borderRadius">
+                                <option value="5px">5px - Sharp</option>
+                                <option value="10px">10px - Current</option>
+                                <option value="15px">15px - Rounded</option>
+                                <option value="20px">20px - Very Rounded</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Design Preview</label>
+                            <div style="
+                                background: var(--secondary-color);
+                                color: var(--primary-color);
+                                padding: 1rem;
+                                border-radius: var(--border-radius);
+                                text-align: center;
+                                font-weight: 600;
+                                border: 2px solid var(--primary-color);
+                            ">
+                                Live Preview - Changes apply in real-time!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e9ecef; padding: 1rem; border-radius: 5px; margin: 1rem 0;">
+                        <h4 style="margin: 0 0 0.5rem 0; color: #333;"><i class="fas fa-info-circle"></i> Global Design Impact</h4>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">
+                            Changes made here will instantly update the entire website design including colors, fonts, and styling across all pages. 
+                            All users will see the new design immediately without needing to refresh.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                        <i class="fas fa-save"></i> Save All Settings & Apply Design Globally
+                    </button>
+                </form>
+            </div>
+
+            <div style="background: #fff; padding: 2rem; border-radius: 10px; border-left: 4px solid #28a745;">
+                <h3><i class="fas fa-sync-alt"></i> Global Sync Status</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                    <div style="background: #d4edda; padding: 1rem; border-radius: 5px; text-align: center;">
+                        <i class="fas fa-database" style="font-size: 2rem; color: #28a745; margin-bottom: 0.5rem;"></i>
+                        <div style="font-weight: 600; color: #155724;">Database Sync</div>
+                        <div style="font-size: 0.9rem; color: #155724;">Active</div>
+                    </div>
+                    <div style="background: #d1ecf1; padding: 1rem; border-radius: 5px; text-align: center;">
+                        <i class="fas fa-broadcast-tower" style="font-size: 2rem; color: #0c5460; margin-bottom: 0.5rem;"></i>
+                        <div style="font-weight: 600; color: #0c5460;">Real-time Updates</div>
+                        <div style="font-size: 0.9rem; color: #0c5460;">Broadcasting</div>
+                    </div>
+                    <div style="background: #fff3cd; padding: 1rem; border-radius: 5px; text-align: center;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: #856404; margin-bottom: 0.5rem;"></i>
+                        <div style="font-weight: 600; color: #856404;">Global Reach</div>
+                        <div style="font-size: 0.9rem; color: #856404;">All Devices</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin JavaScript -->
+    <script src="admin.js"></script>
+
+    <script>
+        // Toggle popup settings visibility
+        document.getElementById('promotionPopup').addEventListener('change', function() {
+            const popupSettings = document.getElementById('popupSettings');
+            if (this.checked) {
+                popupSettings.style.display = 'block';
+            } else {
+                popupSettings.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
