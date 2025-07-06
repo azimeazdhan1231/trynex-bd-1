@@ -2065,7 +2065,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof window.supabase !== 'undefined') {
         try {
             // Backend API configuration (using your deployed Render backend)
-            const BACKEND_URL = 'https://trynex-gift-3.onrender.com'; // Your actual Render URL from the logs
+            const BACKEND_URL = 'https://trynex-bd-1-1.onrender.com'; // Your actual Render URL from the logs
 
             // Backend API helper function
             async function apiCall(endpoint, options = {}) {
